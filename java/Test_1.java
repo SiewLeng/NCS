@@ -1,7 +1,7 @@
 
 import java.util.HashMap;
 
-public class Test1 {
+public class Test_1 {
 
     public static int getMaxDistinctSubStringSum(int[] nums, int k) {
         int currentSum = 0;
