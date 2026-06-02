@@ -83,6 +83,5 @@ public class Test_2 {
         k = 2;
         System.out.println("\nCase 8: " + getLongSubStringWithAtMostKDistinctChar(s, k));
 
-
     }
 }
