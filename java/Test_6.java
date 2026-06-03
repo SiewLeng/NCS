@@ -53,7 +53,6 @@ class NewLinkedList {
     }
 }
 
-
 class LRUCache {
     public int capacity;
     public HashMap<Integer, Node> map;
