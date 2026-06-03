@@ -3,6 +3,24 @@ import java.util.HashMap;
 
 public class Test_1 {
 
+    public static void addNumber(int num, HashMap<Integer, Integer> mapCount) {
+        if (mapCount.containsKey(num)) {
+            int count = mapCount.get(num);
+            mapCount.replace(num, count + 1);
+        } else {
+            mapCount.put(num, 1);
+        }   
+    }
+
+     public static void renmoveNumber(int num, HashMap<Integer, Integer> mapCount) {
+        int count = mapCount.get(num);
+        if (count == 1) {
+            mapCount.remove(num);
+        } else {
+            mapCount.replace(num, count - 1);
+        }
+    }
+
     public static int getMaxDistinctSubStringSum(int[] nums, int k) {
         int currentSum = 0;
         int maxSum = 0;
@@ -13,32 +31,18 @@ public class Test_1 {
                 // startIndex == 0
                 for (int i = startIndex; i <= startIndex + k - 1 ; i++) {
                     currentSum += nums[i];
-                    if (mapCount.containsKey(nums[i])) {
-                        int count = mapCount.get(nums[i]);
-                        mapCount.replace(nums[i], count + 1);
-                    } else {
-                        mapCount.put(nums[i], 1);
-                    }
+                    // add nums[nums[i]] to mapCount
+                    addNumber(nums[i], mapCount);
                 }
             } else {
                 // startIndex >= 1
                 currentSum = currentSum - nums[startIndex - 1] + nums[startIndex + k - 1];
 
                 // add nums[startIndex + k - 1] to mapCount
-                if (mapCount.containsKey(nums[startIndex + k - 1])) {
-                    int count = mapCount.get(nums[startIndex + k - 1]);
-                    mapCount.replace(nums[startIndex + k - 1], count + 1);
-                } else {
-                    mapCount.put(nums[startIndex + k - 1], 1);
-                }
-                
+                addNumber(nums[startIndex + k - 1], mapCount);
+
                 // remove nums[startIndex - 1] from mapCount
-                int count = mapCount.get(nums[startIndex - 1]);
-                if (count == 1) {
-                    mapCount.remove(nums[startIndex - 1]);
-                } else {
-                    mapCount.replace(nums[startIndex - 1], count - 1);
-                }
+                renmoveNumber(nums[startIndex - 1], mapCount);
 
             }
             if (mapCount.size() == k && currentSum > maxSum) {
@@ -79,6 +83,15 @@ public class Test_1 {
         nums = new int[] {1, 2, 3, 4};
         k = 4;
         System.out.println("\nCase 6: " + getMaxDistinctSubStringSum(nums, k));
+
+        nums = new int[] {1, 2, 3, 2};
+        k = 4;
+        System.out.println("\nCase 7: " + getMaxDistinctSubStringSum(nums, k));
+
+        nums = new int[] {5, 1, 9, 2};
+        k = 1;
+        System.out.println("\nCase 8: " + getMaxDistinctSubStringSum(nums, k));
+
          
     }
 }
