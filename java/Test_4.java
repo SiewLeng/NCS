@@ -8,53 +8,49 @@ public class Test_4 {
         return newArray;
     }
 
-    // Merges two subarrays of arr[].
-    // First subarray is arr[l..m]
-    // Second subarray is arr[m+1..r]
-    public static void merge(int arr[], int l, int m, int r) {
+    // Merges two subarrays and return new arr
+    // First subarray is leftarray which is sorted
+    // Second subarray is rightarray whihc is sorted
+    public static int[] merge(int[] leftArray, int[] rightArray) {
         int leftPointer = 0;
         int rightPointer = 0;
-        int[] leftArray = getNewArray(arr, l, m);
-        int[] rightArray = getNewArray(arr, m + 1, r);
+        int[] arr = new int[leftArray.length + rightArray.length];
 
         while (leftPointer < leftArray.length && rightPointer < rightArray.length) {
             if (leftArray[leftPointer] <= rightArray[rightPointer]) {
-                arr[l + leftPointer + rightPointer] = leftArray[leftPointer];
+                arr[leftPointer + rightPointer] = leftArray[leftPointer];
                 leftPointer++;
             } else {
-                arr[l + leftPointer + rightPointer] = rightArray[rightPointer];
+                arr[leftPointer + rightPointer] = rightArray[rightPointer];
                 rightPointer++;
             }
         }
         while (leftPointer < leftArray.length) {
-            arr[l + leftPointer + rightPointer] = leftArray[leftPointer];
+            arr[leftPointer + rightPointer] = leftArray[leftPointer];
             leftPointer++;
         }
          while (rightPointer < rightArray.length) {
-            arr[l + leftPointer + rightPointer] = rightArray[rightPointer];
+            arr[leftPointer + rightPointer] = rightArray[rightPointer];
             rightPointer++;
         }
+        return arr;
+
     }
     
-    // Main function that sorts arr[l..r] using
-    // merge()
-    public static void mergeSort(int[] arr, int l, int r) {
-       if (l < r) {
-            // Find the middle point
-            int m = l + (r - l) / 2;
-
-            // Sort first and second halves
-            mergeSort(arr, l, m);
-            mergeSort(arr, m + 1, r);
-
-            // Merge the sorted halves
-            merge(arr, l, m, r);
-       }
+    // return a new array that is sorted
+    public static int[] mergeSort(int[] arr) {
+       if (arr.length == 1) return arr;
+       int m = arr.length / 2;
+       int[] leftArray = getNewArray(arr, 0, m - 1);
+       int[] rightArray = getNewArray(arr, m, arr.length - 1);
+       leftArray = mergeSort(leftArray);
+       rightArray = mergeSort(rightArray);
+       return merge(leftArray, rightArray);
     }
 
     public static void main(String args[]) {
-        int[] arr = new int[] {1, 4, 2, 3, 10};
-        mergeSort(arr, 0,  arr.length - 1);
+        int[] arr = new int[] {1, 7, 6, 10, 5, 11};
+        arr = mergeSort(arr);
         for (int i = 0; i < arr.length; i++) {
              System.out.print(arr[i] + " ");
         }
