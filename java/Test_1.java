@@ -91,7 +91,6 @@ public class Test_1 {
         nums = new int[] {5, 1, 9, 2};
         k = 1;
         System.out.println("\nCase 8: " + getMaxDistinctSubStringSum(nums, k));
-
-         
+ 
     }
 }
