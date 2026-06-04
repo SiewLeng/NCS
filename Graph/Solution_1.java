@@ -19,42 +19,50 @@ class Result {
 
     public static List<Integer> bfs(int n, int m, List<List<Integer>> edges, int s) {
     // Write your code here
+        List<Integer> nodes = new ArrayList<>();
+        for (int i = 1; i <= n; i++) { 
+            nodes.add(i);
+        }
+        // index of graph, distances, visits = index of nodes
+        Map<Integer, Integer> nodeToIndexMap = new HashMap<>(); 
         List<List<Integer>> graph = new ArrayList<>();
         List<Integer> distances = new ArrayList<>();
         List<Boolean> visits = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            graph.add(new ArrayList<>());
+        for (int i = 0; i < nodes.size(); i++) { 
+            // i = index
+            graph.add(new ArrayList<>()); // graph.get(0) = list of nodes linked to node with index 0
             distances.add(-1);
             visits.add(false);
+            nodeToIndexMap.put(nodes.get(i), i);
         }
-        // node with n value corresponds to (n - 1) index in graph and distance
+
         for (List<Integer> edge: edges) {
-            Integer x = edge.get(0);
-            Integer y = edge.get(1);
-            graph.get(x - 1).add(y); // adajacent list for node with value x
-            graph.get(y - 1).add(x); // adajacent list for node with value y
+            Integer node_x = edge.get(0);
+            Integer node_y = edge.get(1);
+            graph.get(nodeToIndexMap.get(node_x)).add(node_y); // list of nodes linked to node_x
+            graph.get(nodeToIndexMap.get(node_y)).add(node_x); // list of nodes linked to node_y
         }
-        distances.set(s - 1, 0);
-        visits.set(s - 1, true);
+        distances.set(nodeToIndexMap.get(s), 0);
+        visits.set(nodeToIndexMap.get(s), true);
 
         Queue<Integer> queue = new LinkedList<>();
-        queue.add(s); // s is the node, 0 is the distance
+        queue.add(s); // s is the node
         while (!queue.isEmpty()) {
             Integer node = queue.poll();
-            int distance = distances.get(node - 1);
-            for (Integer child:graph.get(node - 1)) {
-                if (!visits.get(child - 1)) {
-                    visits.set(child - 1, true);
-                    distances.set(child - 1, distance + 6);
+            int distance = distances.get(nodeToIndexMap.get(node));
+            for (Integer child:graph.get(nodeToIndexMap.get(node))) {
+                if (!visits.get(nodeToIndexMap.get(child))) {
+                    visits.set(nodeToIndexMap.get(child), true);
+                    distances.set(nodeToIndexMap.get(child), distance + 6);
                     queue.add(child);
                 }
             }   
         }
-        distances.remove(s - 1);
+        distances.remove(Integer.valueOf(0));
+        System.out.println("distances: " + distances);
         return distances;
     }
 }
-
 
 public class Solution_1 {
     public static void main(String[] args) throws IOException {
