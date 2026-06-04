@@ -37,17 +37,16 @@ class Result {
         distances.set(s - 1, 0);
         visits.set(s - 1, true);
 
-        Queue<List<Integer>> queue = new LinkedList<>();
-        queue.add(List.of(s, 0)); // s is the node, 0 is the distance
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(s); // s is the node, 0 is the distance
         while (!queue.isEmpty()) {
-            List<Integer> nodeDistance = queue.poll();
-            int node = nodeDistance.get(0);
-            int distance = nodeDistance.get(1);
+            Integer node = queue.poll();
+            int distance = distances.get(node - 1);
             for (Integer child:graph.get(node - 1)) {
                 if (!visits.get(child - 1)) {
                     visits.set(child - 1, true);
                     distances.set(child - 1, distance + 6);
-                    queue.add(List.of(child, distances.get(child - 1)));
+                    queue.add(child);
                 }
             }   
         }
@@ -57,7 +56,7 @@ class Result {
 }
 
 
-public class Solution {
+public class Solution_1 {
     public static void main(String[] args) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("test.txt"));
